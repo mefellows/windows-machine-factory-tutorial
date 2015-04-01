@@ -1,0 +1,220 @@
+{
+  "variables": {
+    "build_version": "1.0.41"
+  },  
+  "builders": [
+    {
+      "type": "virtualbox-windows-iso",
+      "name": "basebox-vbox",
+      "vm_name": "machinefactory-api-{{user `build_version`}}",
+      "iso_url": "http://download.microsoft.com/download/6/2/A/62A76ABB-9990-4EFC-A4FE-C7D698DAEB96/9600.16384.WINBLUE_RTM.130821-1623_X64FRE_SERVER_EVAL_EN-US-IRM_SSS_X64FREE_EN-US_DV5.ISO",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "458ff91f8abc21b75cb544744bf92e6a",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_wait_timeout": "10m",
+      "winrm_port":5985,
+      "headless": false,
+      "boot_wait": "1m",
+      "guest_additions_mode": "upload",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "Windows2012_64",
+      "disk_size": 61440,
+      "floppy_files": [
+        "./answer_files/2012_r2/Autounattend.xml",  
+        "./scripts/microsoft-updates.bat",
+        "./scripts/win-updates.ps1",
+        "./scripts/oracle-cert.cer",
+        "./scripts/disable-password-complexity.ps1"
+      ],
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--natpf1",
+          "guestwinrm,tcp,127.0.0.1,5985,,5985"
+        ]
+      ]
+    },
+    {
+      "type": "virtualbox-windows-ovf",
+      "name": "devbox-vbox",
+      "source_path": "{{user `source_path`}}",
+      "headless": false,
+      "guest_additions_mode": "disable",
+      "boot_wait": "30s",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_wait_timeout": "5m",
+      "winrm_port":5985,
+      "winrm_host":"localhost",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_timeout": "10m",
+      "http_directory":"/tmp",
+      "vboxmanage": [
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--memory",
+          "2048"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--vram",
+          "64"
+        ],
+        [
+          "modifyvm",
+          "{{.Name}}",
+          "--cpus",
+          "2"
+        ]
+      ]
+    },
+    {
+      "type": "parallels-windows-iso",
+      "name": "basebox-parallels",
+      "vm_name": "machinefactory-api-{{user `build_version`}}",
+      "iso_url": "/Volumes/developers/vagrant/ISO/SW_DVD5_Win_Svr_Std_and_DataCtr_2012_64Bit_English_Core_MLF_X18-27588 2.ISO",
+      "iso_checksum_type": "md5",
+      "iso_checksum_type": "md5",
+      "iso_checksum": "ff95a8c5207c880b099b7f34dba941b6",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_wait_timeout": "60m",
+      "winrm_port":5985,
+      "headless": false,
+      "boot_wait": "2m",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "guest_os_type": "win-8.1",
+      "parallels_tools_flavor": "win",
+      "disk_size": 61440,
+      "floppy_files": [
+        "./answer_files/2012_r2/parallels/Autounattend.xml",  
+        "./scripts/microsoft-updates.bat",
+        "./scripts/win-updates.ps1",
+        "./scripts/oracle-cert.cer",
+        "./scripts/disable-password-complexity.ps1"
+      ],
+      "prlctl": [
+        ["set", "{{.Name}}", "--memsize", "2048"],
+        ["set", "{{.Name}}", "--cpus", "2"],
+        ["set", "{{.Name}}", "--winsystray-in-macmenu", "off"],
+        ["set", "{{.Name}}", "--startup-view", "window"]
+      ]
+    },
+    {
+      "type": "parallels-windows-pvm",
+      "name": "devbox-parallels",
+      "source_path": "./output-basebox-parallels/machinefactory-api-1.0.0.pvm",
+      "headless": false,
+      "boot_wait": "30s",
+      "winrm_username": "vagrant",
+      "winrm_password": "vagrant",
+      "winrm_wait_timeout": "5m",
+      "winrm_port":5985,
+      "winrm_host":"localhost",
+      "shutdown_command": "shutdown /s /t 10 /f /d p:4:1 /c \"Packer Shutdown\"",
+      "shutdown_timeout": "10m",
+      "parallels_tools_mode": "disable",
+      "prlctl": [
+        ["set", "{{.Name}}", "--memsize", "2048"],
+        ["set", "{{.Name}}", "--cpus", "2"],
+        ["set", "{{.Name}}", "--winsystray-in-macmenu", "off"],
+        ["set", "{{.Name}}", "--startup-view", "window"]
+      ]
+    }
+  ],
+  "provisioners": [
+    {
+      "type":"powershell",
+      "inline": [
+        "(iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1')))>$null 2>&1",
+        "choco install 7zip"
+      ]
+    },
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/virtualbox-guest-tools.ps1",
+        "./scripts/disable-password-complexity.ps1"
+      ],
+      "only":["basebox-vbox"]
+    },
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/parallels-guest-tools.ps1",
+        "./scripts/disable-password-complexity.ps1"
+      ],
+      "only":["devbox-parallels"]
+    },
+    {
+      "type": "powershell",
+      "scripts": [ "./scripts/openssh.ps1" ],
+      "only":["devbox-vbox", "devbox-parallels"]
+    },
+    {
+      "type": "powershell",
+      "elevated_user": "vagrant",
+      "elevated_password": "vagrant",
+      "scripts": [ 
+        "./scripts/provision.ps1",
+        "./scripts/provision-agent.ps1",
+        "./scripts/provision-ruby.ps1",
+        "./scripts/provision-dev.ps1"
+      ],
+      "only":["devbox-vbox", "devbox-parallels"]
+    },
+    {
+      "type":"windows-shell",
+      "scripts": [
+        "./scripts/rsync.bat",
+        "./scripts/enable-rdp.bat"
+      ],
+      "only":["devbox-vbox", "devbox-parallels"]
+    },
+    {
+      "type": "powershell",
+      "scripts": [
+        "./scripts/cleanup.ps1"
+      ],
+      "only":["devbox-vbox", "devbox-parallels"]
+    },
+    {
+      "type": "restart-windows",
+      "only":["devbox-vbox", "devbox-parallels"]
+    },
+    {
+      "type": "powershell",
+      "pause_before":"2m",
+      "scripts": [
+        "./scripts/cleanup2.ps1"
+      ],
+      "only":["devbox-vbox", "devbox-parallels"]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "compression_level":1,
+      "keep_input_artifact": true,
+      "output": "machinefactory-api-{{.Provider}}-{{user `build_version`}}.box",
+      "vagrantfile_template": "vagrantfile-windows_2012_r2.template",
+      "only":["devbox-vbox"]
+    }
+  ]
+}

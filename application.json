@@ -1,0 +1,68 @@
+{
+  "variables": {
+    "base_ami":"",
+    "user":"vagrant",
+    "password":"FooBar@123",
+    "build_version":"1.0.0",
+    "app_bundle":"bundle.zip",
+    "package_name":"",
+    "vpc_id":"",
+    "subnet_id":""
+  },  
+  "builders": [
+    {
+      "type": "amazon-windows-ebs",
+      "name": "application-ami",
+      "region": "ap-southeast-2",
+      "source_ami": "{{user `base_ami`}}",
+      "instance_type": "c3.large",
+      "ami_name": "machinefactory-api-{{user `build_version`}}",
+      "associate_public_ip_address":false,
+      "winrm_username": "{{user `user`}}",
+      "winrm_password": "{{user `password`}}",
+      "winrm_wait_timeout": "5m",
+      "winrm_private_ip": true,
+      "winrm_port":5985,
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "tags": {
+        "Name": "machinefactory-api-{{user `build_version`}}",
+        "Environment":"Production",
+        "Role":"application",
+        "Version":"{{user `build_version`}}"
+      },
+      "run_tags": {
+        "Name": "machinefactory-api-{{user `build_version`}}",
+        "Environment":"Production",
+        "Role":"build-in-progress",
+        "Version":"{{user `build_version`}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "pause_before":"60s",
+      "source": "{{user `app_bundle`}}",
+      "destination": "C:\\cfn\\artifacts\\bundle.zip"
+    },
+    {
+      "type":"powershell",
+      "inline": [
+        "& 'C:\\Program Files\\7-Zip\\7z.exe' x -y C:\\cfn\\artifacts\\bundle.zip -oC:\\cfn\\artifacts",
+        "choco install {{user `package_name`}} -source C:\\cfn\\artifacts"
+      ]
+    },
+    {
+      "type":"powershell",
+      "scripts": [
+        "./scripts/Ec2Config.ps1"
+      ]
+    },{
+      "type":"powershell",
+      "inline": [
+        "cmd.exe /c net user /delete vagrant # We don't want this guy hanging around!"
+      ]
+    }
+  ]
+}

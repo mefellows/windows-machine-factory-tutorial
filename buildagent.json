@@ -1,0 +1,59 @@
+{
+  "variables": {
+    "build_version": "1.0.0",
+    "stack_name": "machinefactory-api-build-agents",
+    "base_ami":"",
+    "user":"vagrant",
+    "password":"FooBar@123",
+    "vpc_id":"",
+    "subnet_id":""
+  },  
+  "builders": [
+    {
+      "type": "amazon-windows-ebs",
+      "name": "buildagent",
+      "region": "ap-southeast-2",
+      "source_ami": "{{user `base_ami`}}",
+      "instance_type": "c3.large",
+      "ami_name": "machinefactory-api-buildagent-{{user `build_version`}}",
+      "associate_public_ip_address":false,
+      "winrm_username": "{{user `user`}}",
+      "winrm_password": "{{user `password`}}",
+      "winrm_wait_timeout": "5m",
+      "winrm_private_ip": true,
+      "winrm_port":5985,
+      "vpc_id": "{{user `vpc_id`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "tags": {
+        "Name": "machinefactory-api-base-{{user `build_version`}}",        
+        "Environment":"Dev",
+        "Role":"buildagent",
+        "Version":"{{user `build_version`}}"
+      },
+      "run_tags": {
+        "Name": "machinefactory-api-base-{{user `build_version`}}",        
+        "Environment":"Dev",
+        "Role":"build-in-progress",
+        "Version":"{{user `build_version`}}"
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "powershell",
+      "elevated_user": "{{user `user`}}",
+      "elevated_password": "{{user `password`}}",
+      "scripts": [ "./scripts/provision-agent.ps1" ]
+    },
+    {
+      "type": "powershell",
+      "scripts": [ "./scripts/provision-ruby.ps1" ]
+    },
+    {
+      "type":"powershell",
+      "scripts": [
+        "./scripts/Ec2Config.ps1"
+      ]
+    }
+  ]
+}

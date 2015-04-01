@@ -20,6 +20,7 @@ Parity between Development and CI environments is achieved by using a shared [pr
 - [Packer Community](https://github.com/packer-community/packer-windows-plugins): specialised plugins to make Windows box generation work
 - A set of AWS Credentials for your account (Consider using [credulous](https://github.com/realestate-com-au/credulous) to manage your keys)
 - A subnet and optionally, a VPC, to load the application into
+- Optionally, set environment variables `PACKER_LOG=true` and `PACKER_LOG_PATH=./packer.log` to get better feedback during Packer runs.
 
 ## Virtualbox Developer machine image
 
@@ -42,8 +43,8 @@ A new base machine image is required if the `iso_url` or [Autounattend.xml](answ
     ```
 1. Upload image to share drive
     1. Upload a VirtualBox package file:
-        - *Source:* `<PROJECT_ROOT>output-basebox-vbox`
-        - *Destination:* `<path to backup>output-basebox-vbox`
+        - *Source:* `<PROJECT_ROOT>/output-basebox-vbox`
+        - *Destination:* `<path to backup>/output-basebox-vbox`
 
 ### 2. Build Vagrant box
 
@@ -80,18 +81,33 @@ Copy the box to the shared drive:
     
     cp machinefactory-api-parallels-1.0.2.box <some storage location>
 
-## Base AMIs
+## Base Image (AMI)
+
+This image contains the base OS, plus all dependent software required to run your App - but not the App itself.
 
 This is normally never required to be performed manually (it should be part of a CI process) but if you do, its fairly simple:
 
 ```
-PACKER_LOG=true PACKER_LOG_PATH=./packer.log packer build -only=base-ami -var build_version=1.0.46 ./base.json
+packer build -only=base-ami -var build_version=1.0.46 ./base.json
 ```
 
-## Build Agents
+## Application Image (AMI)
+
+The Application AMI is your Base Image (AMI) + your Application (Package) *without* its runtime configuration applied. This is very important, as it means the image is now able to be used in multiple contexts (stage, test, prod etc.). Provide any dynamic configuration (such as DB connections, collaborator APIs etc.) at stack launch time with [environment variables](http://12factor.net/config), using something like CloudFormation.
 
 ```
-PACKER_LOG=true PACKER_LOG_PATH=./packer.log packer build -only=buildagent -var build_version=1.0.46 ./buildagent.json
+packer build -only=buildagent -var build_version=1.0.46 ./buildagent.json
+```
+
+You will need to install and configure your specific build server application (TeamCity, Jenkins/Hudson, Bamboo etc.) separately, or enhance `provision-agent.ps1`.
+
+
+## Build\CI Agents
+
+This, obviously, is the process that builds your CI server images. Again, it is built from the Base Image so you know that its a superset of what your Production server will have configured on it, giving you increased confidence in build fidelity.
+
+```
+packer build -only=buildagent -var build_version=1.0.46 ./buildagent.json
 ```
 
 You will need to install and configure your specific build server application (TeamCity, Jenkins/Hudson, Bamboo etc.) separately, or enhance `provision-agent.ps1`.

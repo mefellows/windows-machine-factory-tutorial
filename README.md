@@ -87,6 +87,8 @@ This image contains the base OS, plus all dependent software required to run you
 
 This is normally never required to be performed manually (it should be part of a CI process) but if you do, its fairly simple:
 
+NOTE: You will need to adjust `region` and `subnet_id` to values matching your account, pick a Windows 2012r2 AMI for your region and set as the value for `source_ami`.
+
 ```
 packer build -only=base-ami -var build_version=1.0.46 ./base.json
 ```

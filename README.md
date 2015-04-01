@@ -15,7 +15,7 @@ Parity between Development and CI environments is achieved by using a shared [pr
 ### Dependencies:
 
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads): virtualisation platform to run development machine images.
-- *[Parallels Desktop](http://www.parallels.com/au/products/desktop/download/) and the SDK. This is only required if creating Parallels images.
+- [Parallels Desktop](http://www.parallels.com/au/products/desktop/download/) and the SDK. This is only required if creating Parallels images.
 - [Packer](https://packer.io/): used to build and provision machine images.
 - [Packer Community](https://github.com/packer-community/packer-windows-plugins): specialised plugins to make Windows box generation work
 - A set of AWS Credentials for your account (Consider using [credulous](https://github.com/realestate-com-au/credulous) to manage your keys)
@@ -27,7 +27,7 @@ Get existing Windows base box OR create a new one from scratch:
 
 ### 1(a). Get pre-prepared VirtualBox machine image
 
-- *Source:* `\\aumel-nas2\developers\vagrant\machinefactory-api\output-basebox-vbox`
+- *Source:* `<path to base>/output-basebox-vbox`
 - *Destination:* `<PROJECT_ROOT>/output-output-basebox-vbox`
 
 ### 1(b). OR, Create a new VirtualBox machine image
@@ -42,8 +42,8 @@ A new base machine image is required if the `iso_url` or [Autounattend.xml](answ
     ```
 1. Upload image to share drive
     1. Upload a VirtualBox package file:
-        - *Source:* `<PROJECT_ROOT>\machine-factory\basebox\output-basebox-vbox`
-        - *Destination:* `\\aumel-nas2\developers\vagrant\machinefactory-api\output-basebox-vbox`
+        - *Source:* `<PROJECT_ROOT>output-basebox-vbox`
+        - *Destination:* `<path to backup>output-basebox-vbox`
 
 ### 2. Build Vagrant box
 
@@ -59,11 +59,12 @@ A new Vagrant box is required when [provision.ps1](scripts/provision.ps1) change
 1. Register the new box with Vagrant on your local machine
 
     ```
-    vagrant box add machinefactory-api file:///<PROJECT_ROOT>/machinefactory-api-1.0.1.box
+    vagrant box add machinefactory-api-1.0.1 file:///<PROJECT_ROOT>/machinefactory-api-1.0.1.box
     ```
 
 1. Upload the machinefactory-api developer box and share with the rest of the team.  This is the base image used by Vagrant to spin up a virtualised developer environment.
 
+You will also need to update the Vagrantfile with the new box / version once you are happy it is working as expected.
 
 ## Parallels Developer Machine
 

@@ -2,10 +2,7 @@
 # vi: set ft=ruby :
 
 $shell_script = <<SCRIPT
-  #choco uninstall seek-dsc-webadministration
-  #choco install seek-dsc-webadministration -Version 1.0.0.79 # This specific version works nicely with 2012r2 (bug fix pending)
   choco install mongodb
-  Get-DSCResource
 SCRIPT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!

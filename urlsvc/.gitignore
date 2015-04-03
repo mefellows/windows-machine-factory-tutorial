@@ -1,0 +1,11 @@
+[Bb]in
+[Oo]bj
+*.suo
+*.user
+*ReSharper*
+*dotCover*
+packages
+*.dll
+*.exe
+Debug
+Release

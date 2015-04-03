@@ -1,0 +1,5 @@
+﻿<html>
+    <body>
+		<a id="shorturl" href="http://@Model.Host/@Model.ShortUrl">http://@Model.Host/@Model.ShortUrl</a>
+    </body>
+</html>

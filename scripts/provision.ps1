@@ -14,5 +14,3 @@ $env:JAVA_HOME="${env:ProgramFiles(x86)}\Java\jre7"
 
 choco install nssm
 choco install logstash
-choco install seek-ts-logstash-forwarder -source http://nuget.seek.int/api
-Get-Service *logstash* | Stop-Service

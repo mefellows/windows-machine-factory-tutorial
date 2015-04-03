@@ -1,6 +1,6 @@
 # Machine Factory Tutorial
 
-Example project to accompany a series of blogs (TBA @ [onegeek.com.au](http://www.onegeek.com.au)) on setting up Machine Factories on Windows.
+Example project to accompany a series of [blogs](http://www.onegeek.com.au/articles/machine-factories-part1-vagrant) on setting up Machine Factories on Windows.
 
 ## Background
 

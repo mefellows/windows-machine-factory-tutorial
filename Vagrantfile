@@ -17,14 +17,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "machinefactory-api-virtualbox-1.0.0"
   hostname = "urlsvc.dev"
   ip_address = "10.0.0.30"
-
+ 
+  host_port = 5895
+  config.winrm.host = "localhost"
+  config.winrm.port = host_port
+  config.winrm.guest_port = host_port
   config.vm.guest = :windows
   config.vm.communicator = "winrm"
-
-  config.vm.network :forwarded_port, guest: 5985, host: 5985, id: "winrm", auto_correct: true
-  config.vm.network :forwarded_port, guest: 80,   host: 8000, id: "web" # Port forward for IIS
-  config.vm.network :forwarded_port, guest: 443, host: 8443,  id: "ssl" # Port forward for SSL IIS
-  config.vm.network :forwarded_port, guest: 22, host: 9222,  id: "ssh" # Port forward for SSL IIS
+  config.vm.network :forwarded_port,   guest: 3389, host: 3399,       id: "rdp",   auto_correct: false
+  config.vm.network :forwarded_port,   guest: 5985, host: host_port,  id: "winrm", auto_correct: false
+  config.vm.network :forwarded_port,   guest: 80,   host: 8000,       id: "web" # Port forward for IIS
+  config.vm.network :forwarded_port,   guest: 443,  host: 8443,       id: "ssl" # Port forward for SSL IIS
+  config.vm.network :forwarded_port,   guest: 4018, host: 4018,       id: "remotevsdebug"
   config.vm.network "private_network", ip: ip_address
 
   config.vm.provider "virtualbox" do |v|
@@ -43,7 +47,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", inline: $shell_script
 
   # Run DSC
-  config.vm.provision "dsc" do |dsc|
+  config.vm.provision "dsc", run: "always" do |dsc|
 
     # Set of module paths relative to the Vagrantfile dir.
     #

@@ -5,7 +5,7 @@
         [String]$WebAppPath             = "c:\myWebApp",
         [String]$WebSiteName            = "UrlSvc",
         [String]$HostNameSuffix         = "dev",
-        [String]$HostName               = "api.urlsvc.${HostNameSuffix}",
+        [String]$HostName               = "urlsvc.${HostNameSuffix}",
         [String]$ApiAppPoolName         = "UrlSvc-API",
         [HashTable]$AuthenticationInfo = @{Anonymous = "true"; Basic = "false"; Digest = "false"; Windows = "false"}
     )

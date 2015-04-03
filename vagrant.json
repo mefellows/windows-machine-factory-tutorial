@@ -1,8 +1,7 @@
 {
   "variables": {
     "build_version": "1.0.0",
-    "ovf_source_path": "./output-basebox-vbox/machinefactory-api-1.0.0.ovf",
-    "pvm_source_path": "./output-basebox-parallels/machinefactory-api-1.0.0.pvm"
+    "ovf_source_path": "./output-basebox-vbox/machinefactory-api-1.0.0.ovf"
   },  
   "builders": [
     {
@@ -105,16 +104,8 @@
     },
     {
       "type": "powershell",
-      "scripts": [
-        "./scripts/parallels-guest-tools.ps1",
-        "./scripts/disable-password-complexity.ps1"
-      ],
-      "only":["devbox-parallels"]
-    },
-    {
-      "type": "powershell",
       "scripts": [ "./scripts/openssh.ps1" ],
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     },
     {
       "type": "powershell",
@@ -126,7 +117,7 @@
         "./scripts/provision-ruby.ps1",
         "./scripts/provision-dev.ps1"
       ],
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     },
     {
       "type":"windows-shell",
@@ -134,18 +125,18 @@
         "./scripts/rsync.bat",
         "./scripts/enable-rdp.bat"
       ],
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     },
     {
       "type": "powershell",
       "scripts": [
         "./scripts/cleanup.ps1"
       ],
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     },
     {
       "type": "restart-windows",
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     },
     {
       "type": "powershell",
@@ -153,7 +144,7 @@
       "scripts": [
         "./scripts/cleanup2.ps1"
       ],
-      "only":["devbox-vbox", "devbox-parallels"]
+      "only":["devbox-vbox"]
     }
   ],
   "post-processors": [

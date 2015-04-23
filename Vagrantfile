@@ -83,7 +83,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Defaults to 'manifests'.
     #
     # Path is relative to the folder containing the Vagrantfile.
-    dsc.manifests_path = "manifests"
+    dsc.manifests_path = "urlsvc/ShortUrlWebApp/manifests"
 
     # Commandline arguments to the Configuration run
     #

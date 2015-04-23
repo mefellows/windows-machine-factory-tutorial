@@ -14,6 +14,7 @@ Parity between Development and CI environments is achieved by using a shared [pr
 
 ### Dependencies:
 
+- [Mono](www.mono-project.com/) or a .NET 4.5+ runtime environment.
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads): virtualisation platform to run development machine images.
 - [Parallels Desktop](http://www.parallels.com/au/products/desktop/download/) and the SDK. This is only required if creating Parallels images.
 - [Packer](https://packer.io/): used to build and provision machine images.
@@ -21,6 +22,42 @@ Parity between Development and CI environments is achieved by using a shared [pr
 - A set of AWS Credentials for your account (Consider using [credulous](https://github.com/realestate-com-au/credulous) to manage your keys)
 - A subnet and optionally, a VPC, to load the application into
 - Optionally, set environment variables `PACKER_LOG=true` and `PACKER_LOG_PATH=./packer.log` to get better feedback during Packer runs.
+
+## Building the Application
+
+To install all required command line artifacts, such as FAKE:
+
+```
+./build.sh
+```
+
+General:
+
+```
+mono "Build/packages/FAKE/tools/Fake.exe" build.fsx
+```
+
+This will generate `*.nupkg` artifacts in `./publish` as well as a zip of all of these packages suitable for Chocolatey installation. To install these packages onto your Vagrant box, you can:
+
+```
+cd c:\vagrant\publish
+choco install machine-factory-tutorial -source C:\vagrant\publish
+```
+
+To uninstall, run `choco uninstall machine-factory-tutorial`
+
+## Running your local Vagrant development environment
+
+IMPORTANT: You will need to install rsync (3.1.0) and ssh using the cygwin installer. You can use this [script](https://gist.github.com/mefellows/c892feb4c28442f87a76) as a guide, but beware it will likely install a newer rsync version than what you need. You may need to manually downgrade that package using `cygwin-setup.exe`.
+
+After creating your box (see below), we run:
+
+```
+vagrant up
+vagrant rsync-auto
+```
+
+The second command continually syncs files into the guest machine using rsync, to work around IIS [limitations](stackoverflow.com/questions/22636106/iis-application-using-shared-folder-in-virtualbox-vm/26709664) on running Web Applications on shared folders.
 
 ## Virtualbox Developer machine image
 

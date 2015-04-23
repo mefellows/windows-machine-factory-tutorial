@@ -29,7 +29,7 @@ let version = defaultArg TeamCityBuildNumber "0.0"
 
 tracefn "Version: %s" version
 
-//RestorePackages()
+RestorePackages()
 
 // Targets
 Target "Clean" (fun _ ->

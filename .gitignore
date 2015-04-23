@@ -1,0 +1,9 @@
+*.log
+**/buildTemp
+**/publish
+**/packages
+**/packaging
+**/bin
+**/obj
+**/.tmp
+.vagrant

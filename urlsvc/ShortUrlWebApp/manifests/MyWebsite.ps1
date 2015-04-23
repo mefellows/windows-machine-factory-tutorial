@@ -1,6 +1,9 @@
 Configuration MyWebsite
 {
-  param ($MachineName)
+  param (
+    [string] $MachineName,
+    [string] $WebAppPath = "c:\vagrant\urlsvc\ShortUrlWebApp"
+  )
 
   Import-DscResource -Module MyWebapp
   Import-DscResource -Module cNetworking
@@ -37,7 +40,7 @@ Configuration MyWebsite
     }
     SimpleWebsite sWebsite
     {
-        WebAppPath = "c:\vagrant\urlsvc\ShortUrlWebApp"
+        WebAppPath = $WebAppPath
         DependsOn  = '[cWebsite]DefaultWebsite'
     }    
   }

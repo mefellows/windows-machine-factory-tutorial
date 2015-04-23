@@ -3,6 +3,13 @@
 
 $shell_script = <<SCRIPT
   choco install mongodb
+
+  # Ensure we have a local IIS readable directory
+  $share = "\\vboxsvr\vagrant"
+  $guest_path = "c:\code
+  cmd /c  mklink /d $guest_path  $share 
+  cmd /c "NET SHARE code=$guest_path /GRANT:Everyone,FULL"
+
 SCRIPT
 
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
@@ -55,13 +62,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # environment to enable local modules to be addressed.
     #
     # @return [Array] Set of relative module paths.
-    dsc.module_path = ["modules"]
+    dsc.module_path = ["urlsvc/ShortUrlWebApp/modules"]
 
     # The path relative to `dsc.manifests_path` pointing to the Configuration file
     dsc.configuration_file  = "MyWebsite.ps1"
 
     # The path relative to Vagrantfile pointing to the Configuration Data file
-    dsc.configuration_data_file  = "manifests/MyConfig.psd1"
+    dsc.configuration_data_file  = "urlsvc/ShortUrlWebApp/manifests/MyConfig.psd1"
 
     # The Configuration Command to run. Assumed to be the same as the `dsc.configuration_file`
     # (sans extension) if not provided.

@@ -1,9 +1,10 @@
 {
   "variables": {
     "build_version": "1.0.0",
-    "base_ami":"",
+    "base_ami":"ami-3a3b1d52",
     "user":"vagrant",
     "password":"FooBar@123",
+    "instance_type":"t2.small",
     "vpc_id":"",
     "subnet_id":""
   },  
@@ -13,8 +14,8 @@
       "name": "base-ami",
       "region": "ap-southeast-2",
       "source_ami": "{{user `base_ami`}}",
-      "instance_type": "c3.large",
-      "ami_name": "machinefactory-api-base-{{user `build_version`}}",
+      "instance_type": "{{user `instance_type`}}",
+      "ami_name": "base-{{user `build_version`}}",
       "user_data_file":"./scripts/ec2-bootstrap.ps1",
       "associate_public_ip_address":false,
       "winrm_username": "{{user `user`}}",
@@ -23,19 +24,7 @@
       "winrm_private_ip": true,
       "winrm_port":5985,
       "vpc_id": "{{user `vpc_id`}}",
-      "subnet_id": "{{user `subnet_id`}}",
-      "tags": {
-        "Name": "machinefactory-api-base-{{user `build_version`}}",
-        "Environment":"Dev",
-        "Role":"base",
-        "Version":"{{user `build_version`}}"
-      },
-      "run_tags": {
-        "Name": "machinefactory-api-base-{{user `build_version`}}",
-        "Environment":"Dev",
-        "Role":"build-in-progress",
-        "Version":"{{user `build_version`}}"
-      }
+      "subnet_id": "{{user `subnet_id`}}"
     }
   ],
   "provisioners": [

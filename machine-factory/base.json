@@ -1,6 +1,6 @@
 {
   "variables": {
-    "build_version": "1.0.0",
+    "build_version": "1.0.1",
     "base_ami":"ami-3a3b1d52",
     "user":"vagrant",
     "password":"FooBar@123",
@@ -12,16 +12,16 @@
     {
       "type": "amazon-windows-ebs",
       "name": "base-ami",
-      "region": "ap-southeast-2",
+      "region": "us-east-1",
       "source_ami": "{{user `base_ami`}}",
       "instance_type": "{{user `instance_type`}}",
       "ami_name": "base-{{user `build_version`}}",
       "user_data_file":"./scripts/ec2-bootstrap.ps1",
-      "associate_public_ip_address":false,
+      "associate_public_ip_address":true,
       "winrm_username": "{{user `user`}}",
       "winrm_password": "{{user `password`}}",
       "winrm_wait_timeout": "20m",
-      "winrm_private_ip": true,
+      "winrm_private_ip": false,
       "winrm_port":5985,
       "vpc_id": "{{user `vpc_id`}}",
       "subnet_id": "{{user `subnet_id`}}"
@@ -32,7 +32,14 @@
       "type": "powershell",
       "elevated_user": "{{user `user`}}",
       "elevated_password": "{{user `password`}}",
-      "scripts": [ "./scripts/provision.ps1" ]
+      "scripts": [ "./scripts/provision.ps1" ]      
+    },
+    {
+      "type":"powershell",
+      "elevated_user": "{{user `user`}}",
+      "elevated_password": "{{user `password`}}",      
+      "inline": [ "choco install mongodb -y -force" ],
+      "valid_exit_codes": [ 0, 1, 3221225725 ]
     },
     {
       "type":"powershell",

@@ -5,6 +5,7 @@ choco install microsoft-build-tools
 choco install vs2013agents
 choco install netfx-4.5.1-devpack
 choco install ruby
+choco install terraform
 choco install packer-windows-plugins -pre
 install-windowsfeature NET-Framework-Core
 

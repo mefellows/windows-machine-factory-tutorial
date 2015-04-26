@@ -12,14 +12,14 @@
     {
       "type": "amazon-windows-ebs",
       "name": "buildagent",
-      "region": "ap-southeast-2",
+      "region": "us-east-1",
       "source_ami": "{{user `base_ami`}}",
       "instance_type": "c3.large",
       "ami_name": "machinefactory-api-buildagent-{{user `build_version`}}",
       "associate_public_ip_address":false,
       "winrm_username": "{{user `user`}}",
       "winrm_password": "{{user `password`}}",
-      "winrm_wait_timeout": "5m",
+      "winrm_wait_timeout": "10m",
       "winrm_private_ip": true,
       "winrm_port":5985,
       "vpc_id": "{{user `vpc_id`}}",
@@ -53,6 +53,11 @@
       "type":"powershell",
       "scripts": [
         "./scripts/Ec2Config.ps1"
+      ]
+    },{
+      "type":"powershell",
+      "inline": [
+        "cmd.exe /c net user /delete vagrant # We don't want this guy hanging around!"
       ]
     }
   ]

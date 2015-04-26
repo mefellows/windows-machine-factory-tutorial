@@ -30,7 +30,7 @@
         State = "Started"
         IdentityType = "SpecificUser"
         UserName =  "vagrant"
-        Password = "vagrant"
+        Password = "FooBar@123"
     }
 
     cWebsite UrlSvcWebsite
@@ -44,6 +44,11 @@
                             Protocol = "http"
                             Port = 80
                             HostName = $HostName
+                            IPAddress = "*"
+                        };SEEK_cWebBindingInformation
+                        {
+                            Protocol = "http"
+                            Port = 80
                             IPAddress = "*"
                         })
         AuthenticationInfo = SEEK_cWebAuthenticationInformation

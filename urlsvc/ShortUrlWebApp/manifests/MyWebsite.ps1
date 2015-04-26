@@ -41,7 +41,6 @@ Configuration MyWebsite
     SimpleWebsite sWebsite
     {
         WebAppPath = $WebAppPath
-        DependsOn  = '[cWebsite]DefaultWebsite'
     }    
   }
 }

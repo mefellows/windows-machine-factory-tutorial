@@ -82,10 +82,8 @@ Target "CreatePackage" (fun _ ->
             Files = [(@"buildTemp/**", Some "lib", None)
                      (@"urlsvc/ShortUrlWebApp/modules/**/*", Some "dsc", None)
                      (@"urlsvc/ShortUrlWebApp/manifests/*", Some "dsc", None)
-                     (@"urlsvc/ShortUrlWebApp/Install/*", Some "Install", None)]
+                     (@"urlsvc/ShortUrlWebApp/Install/*", Some "tools", None)]
 
-            // This is the choco install part...
-            //(@"../urlsvc" @@ projectName @@ "Install/**", Some "tools", None)]
             Publish = false }) 
 )
 

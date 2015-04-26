@@ -283,7 +283,7 @@
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
-                            <Value>vagrant</Value>
+                            <Value>FooBar@123</Value>
                             <PlainText>true</PlainText>
                         </Password>
                         <Group>administrators</Group>

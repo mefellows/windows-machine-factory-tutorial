@@ -1,10 +1,10 @@
 {
   "variables": {
-    "base_ami":"",
+    "base_ami":"ami-fcdcde94",
     "user":"vagrant",
     "password":"FooBar@123",
-    "build_version":"1.0.2",
-    "app_bundle":"bundle.zip",
+    "build_version":"1.0.3",
+    "app_bundle":"../publish/source.zip",
     "package_name":"",
     "vpc_id":"",
     "subnet_id":""

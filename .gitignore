@@ -7,3 +7,5 @@
 **/obj
 **/.tmp
 .vagrant
+**/*.tfstate
+**/*.tfstate.backup

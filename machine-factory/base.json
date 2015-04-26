@@ -32,7 +32,8 @@
       "type": "powershell",
       "elevated_user": "{{user `user`}}",
       "elevated_password": "{{user `password`}}",
-      "scripts": [ "./scripts/provision.ps1" ]      
+      "scripts": [ "./scripts/provision.ps1" ],
+      "valid_exit_codes": [ 0, 516 ]
     },
     {
       "type":"powershell",

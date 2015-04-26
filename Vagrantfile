@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 $shell_script = <<SCRIPT
-  choco install mongodb
+  choco install mongodb -y
 
   # Ensure we have a local IIS readable directory
   $share = "\\vboxsvr\vagrant"

@@ -8,7 +8,7 @@ The "Machine Factory" was affectionately named by the team in project MarioKart 
 
 This additional optimisation was added to improve the spin-up time of developer/build machines by having prebaked base images.
 
-Parity between Development and CI environments is achieved by using a shared [provisioning script](scripts/provision.ps1). Both developer machine images and build agent AMIs are provisioned using the same recipe but built using different virtualisation platforms.
+Parity between Development and CI environments is achieved by using a shared [provisioning script](machine-factory/scripts/provision.ps1). Both developer machine images and build agent AMIs are provisioned using the same recipe but built using different virtualisation platforms.
 
 ## IMPORTANT: Before you start
 
@@ -104,21 +104,7 @@ A new Vagrant box is required when [provision.ps1](scripts/provision.ps1) change
 
 You will also need to update the Vagrantfile with the new box / version once you are happy it is working as expected.
 
-## Parallels Developer Machine
-
-Follow the instructions as per Virtualbox, however instead of using the postfix `vbox` on the builders, use `parallels`. Additionally, due to a packer post-processor issue with Parallels 10, you will need to manually zip the contents of the box into its own .box file:
-
-
-    cd output-devbox-parallels
-    echo '{"provider":"parallels"}' > metadata.json
-    cat ../vagrantfile-windows_2012_r2.template > Vagrantfile
-    tar --lzma -cvf machinefactory-api-parallels-1.0.2.box *
-
-Copy the box to the shared drive:
-    
-    cp machinefactory-api-parallels-1.0.2.box <some storage location>
-
-## Base Image (AMI)
+## Base Amazon Image (AMI)
 
 This image contains the base OS, plus all dependent software required to run your App - but not the App itself.
 
@@ -130,7 +116,7 @@ NOTE: You will need to adjust `region` and `subnet_id` to values matching your a
 packer build -only=base-ami -var build_version=1.0.46 ./base.json
 ```
 
-## Application Image (AMI)
+## Application Amazon Image (AMI)
 
 The Application AMI is your Base Image (AMI) + your Application (Package) *without* its runtime configuration applied. This is very important, as it means the image is now able to be used in multiple contexts (stage, test, prod etc.). Provide any dynamic configuration (such as DB connections, collaborator APIs etc.) at stack launch time with [environment variables](http://12factor.net/config), using something like CloudFormation.
 
@@ -141,7 +127,7 @@ packer build -only=buildagent -var build_version=1.0.46 ./buildagent.json
 You will need to install and configure your specific build server application (TeamCity, Jenkins/Hudson, Bamboo etc.) separately, or enhance `provision-agent.ps1`.
 
 
-## Build\CI Agents
+## Build\CI Agents (AMI)
 
 This, obviously, is the process that builds your CI server images. Again, it is built from the Base Image so you know that its a superset of what your Production server will have configured on it, giving you increased confidence in build fidelity.
 
@@ -150,3 +136,6 @@ packer build -only=buildagent -var build_version=1.0.46 ./buildagent.json
 ```
 
 You will need to install and configure your specific build server application (TeamCity, Jenkins/Hudson, Bamboo etc.) separately, or enhance `provision-agent.ps1`.
+
+## Deploying with Terraform
+

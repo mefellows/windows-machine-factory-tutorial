@@ -41,11 +41,6 @@
   ],
   "provisioners": [
     {
-      "type": "powershell",
-      "inline": ["choco install mongodb -y"],
-      "valid_exit_codes": [ 3221225725 ]
-    },
-    {
       "type": "file",
       "pause_before":"60s",
       "source": "{{user `app_bundle`}}",

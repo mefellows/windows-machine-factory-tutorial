@@ -14,7 +14,7 @@ Parity between Development and CI environments is achieved by using a shared [pr
 
 ### Dependencies:
 
-- [Mono](www.mono-project.com/) or a .NET 4.5+ runtime environment.
+- [Mono](http://www.mono-project.com/) or a .NET 4.5+ runtime environment.
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads): virtualisation platform to run development machine images.
 - [Parallels Desktop](http://www.parallels.com/au/products/desktop/download/) and the SDK. This is only required if creating Parallels images.
 - [Packer](https://packer.io/): used to build and provision machine images.

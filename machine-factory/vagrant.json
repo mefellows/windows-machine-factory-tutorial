@@ -112,6 +112,14 @@
       "only":["devbox-vbox"]
     },
     {
+      "type":"windows-shell",
+      "scripts": [
+        "./scripts/rsync.bat",
+        "./scripts/enable-rdp.bat"
+      ],
+      "only":["devbox-vbox"]
+    },
+    {
       "type": "powershell",
       "elevated_user": "vagrant",
       "elevated_password": "FooBar@123",
@@ -120,14 +128,6 @@
         "./scripts/provision-agent.ps1",
         "./scripts/provision-ruby.ps1",
         "./scripts/provision-dev.ps1"
-      ],
-      "only":["devbox-vbox"]
-    },
-    {
-      "type":"windows-shell",
-      "scripts": [
-        "./scripts/rsync.bat",
-        "./scripts/enable-rdp.bat"
       ],
       "only":["devbox-vbox"]
     },

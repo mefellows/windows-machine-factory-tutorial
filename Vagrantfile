@@ -47,9 +47,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.multihostsupdater.aliases = {ip_address => [hostname]}
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    owner: "vagrant",
-    rsync__exclude: [".git", "*.box", "output-*"]
+  config.vm.synced_folder '.', "/cygdrive/c/vagrant",
+    type: "rsync",
+    rsync__auto: "true",
+    rsync__exclude: [".git/","*.box", "output-*"],
+    id: "vagrant"
 
   # Install Chocolatey and some basic DSC Resources
   config.vm.provision "shell", inline: $shell_script

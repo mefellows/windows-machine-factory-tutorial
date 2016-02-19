@@ -1,12 +1,12 @@
 # Allows us to build without VS
 # Note: you will need to copy \ package the reference assemblies (we have created an internal Nuget chocolatey package to distribute)
 # see http://nickberardi.com/a-net-build-server-without-visual-studio/ for details
-choco install microsoft-build-tools 
-choco install vs2013agents
-choco install netfx-4.5.1-devpack
-choco install ruby
-choco install terraform
-choco install packer-windows-plugins -pre
+choco install microsoft-build-tools  -y
+choco install vs2013agents -y
+choco install netfx-4.5.1-devpack  -y
+choco install ruby -y
+choco install terraform -y
+choco install packer-windows-plugins -pre -y
 install-windowsfeature NET-Framework-Core
 
 # F# Bundle

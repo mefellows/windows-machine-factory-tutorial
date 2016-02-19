@@ -7,7 +7,7 @@ $shell_script = <<SCRIPT
   # Ensure we have a local IIS readable directory
   $share = "\\vboxsvr\vagrant"
   $guest_path = "c:\code
-  cmd /c  mklink /d $guest_path  $share 
+  cmd /c  mklink /d $guest_path  $share
   cmd /c "NET SHARE code=$guest_path /GRANT:Everyone,FULL"
 
 SCRIPT
@@ -21,12 +21,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "machinefactory-api-virtualbox-1.0.0"
+  config.vm.box = "machinefactory-api-1.0.1"
   hostname = "urlsvc.dev"
   ip_address = "10.0.0.30"
- 
+
   host_port = 5895
   config.winrm.host = "localhost"
+  config.winrm.password = "FooBar@123"
   config.winrm.port = host_port
   config.winrm.guest_port = host_port
   config.vm.guest = :windows

@@ -10,7 +10,7 @@
         [HashTable]$AuthenticationInfo = @{Anonymous = "true"; Basic = "false"; Digest = "false"; Windows = "false"}
     )
 
-    Import-DscResource -Module cWebAdministration 
+    Import-DscResource -Module cWebAdministration
     Import-DscResource -Module cNetworking
 
     # Stop the default website
@@ -67,5 +67,12 @@
         PhysicalPath = $WebAppPath
         State = "Started"
         DependsOn = @("[cWebsite]DefaultSite")
+    }
+
+    Environment DatabaseURL
+    {
+        Name = "DATABASE_URL"
+        Ensure = "Present"
+        Value = "mongodb://localhost:27017/short_url" 
     }
 }

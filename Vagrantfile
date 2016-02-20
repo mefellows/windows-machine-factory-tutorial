@@ -1,17 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$shell_script = <<SCRIPT
-  choco install mongodb -y
-
-  # Ensure we have a local IIS readable directory
-  $share = "\\vboxsvr\vagrant"
-  $guest_path = "c:\code
-  cmd /c  mklink /d $guest_path  $share 
-  cmd /c "NET SHARE code=$guest_path /GRANT:Everyone,FULL"
-
-SCRIPT
-
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -21,12 +10,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "machinefactory-api-virtualbox-1.0.0"
-  hostname = "urlsvc.dev"
+  config.vm.box = "machinefactory-api-1.0.1"
+  hostname = "urlsvc.local"
   ip_address = "10.0.0.30"
- 
+
   host_port = 5895
   config.winrm.host = "localhost"
+  config.winrm.password = "FooBar@123"
   config.winrm.port = host_port
   config.winrm.guest_port = host_port
   config.vm.guest = :windows
@@ -46,12 +36,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.multihostsupdater.aliases = {ip_address => [hostname]}
   end
 
-  config.vm.synced_folder ".", "/vagrant", type: "rsync",
-    owner: "vagrant",
-    rsync__exclude: [".git", "*.box", "output-*"]
-
-  # Install Chocolatey and some basic DSC Resources
-  config.vm.provision "shell", inline: $shell_script
+  config.vm.synced_folder '.', "/cygdrive/c/vagrant",
+    type: "rsync",
+    rsync__auto: "true",
+    rsync__exclude: [".git/","*.box", "output-*"],
+    id: "vagrant"
 
   # Run DSC
   config.vm.provision "dsc", run: "always" do |dsc|
@@ -88,7 +77,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Commandline arguments to the Configuration run
     #
     # Set of Parameters to pass to the DSC Configuration.
-    dsc.configuration_params = {"-MachineName" => "localhost", "-WebAppPath" => "c:\\vagrant\\urlsvc", "-HostName" => hostname}
+    dsc.configuration_params = {"-MachineName" => "localhost", "-WebAppPath" => "c:\\vagrant\\buildTemp\\_PublishedWebsites\\ShortUrlWebApp", "-HostName" => hostname}
 
     # The type of synced folders to use when sharing the data
     # required for the provisioner to work properly.

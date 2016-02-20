@@ -1,7 +1,7 @@
 ﻿namespace ShortUrl
 {
     using Nancy;
-	
+
 	public class ShortUrlModule : NancyModule
     {
         public ShortUrlModule(UrlStore urlStore)
@@ -11,7 +11,7 @@
             Get["/{shorturl}"] = param =>
             {
                 string shortUrl = param.shorturl;
-				return Response.AsRedirect(urlStore.GetUrlFor(shortUrl.ToString()), Nancy.Responses.RedirectResponse.RedirectType.Temporary);
+				        return Response.AsRedirect(urlStore.GetUrlFor(shortUrl.ToString()), Nancy.Responses.RedirectResponse.RedirectType.Temporary);
             };
         }
 
@@ -20,7 +20,7 @@
             string longUrl = Request.Form.url;
             var shortUrl = ShortenUrl(longUrl);
             urlStore.SaveUrl(longUrl, shortUrl);
-            
+
             return View["shortened_url", new { Request.Headers.Host, ShortUrl = shortUrl }];
         }
 

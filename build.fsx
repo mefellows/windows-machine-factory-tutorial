@@ -25,7 +25,7 @@ let packagingRoot = "./packaging/"
 let root = "./"
 let deployDir = "./publish/"
 
-let version = defaultArg TeamCityBuildNumber "0.0"
+let version = defaultArg TeamCityBuildNumber "0.0.1"
 
 tracefn "Version: %s" version
 
@@ -36,7 +36,7 @@ Target "Clean" (fun _ ->
     CleanDirs [ testDir; buildDir; packagingRoot; deployDir ]
 )
 
-Target "RestorePackages" (fun _ -> 
+Target "RestorePackages" (fun _ ->
     !! "**/ShortUrl*/packages.config"
     |> Seq.iter (RestorePackage (fun p -> {p with OutputPath = "./packages"}))
  )
@@ -67,10 +67,10 @@ Target "CreatePackage" (fun _ ->
     let packageDir = "./Build/packages/"
     let autoDep x = x, GetPackageVersion packageDir x
     let dependenciesWithVersion = dependencies |> List.map autoDep
-    
+
     projectName
     |> sprintf "%s.nuspec"
-    |> NuGet (fun p -> 
+    |> NuGet (fun p ->
         {p with
             Authors = authors
             Project = packageName
@@ -84,7 +84,7 @@ Target "CreatePackage" (fun _ ->
                      (@"urlsvc/ShortUrlWebApp/manifests/*", Some "dsc", None)
                      (@"urlsvc/ShortUrlWebApp/Install/*", Some "tools", None)]
 
-            Publish = false }) 
+            Publish = false })
 )
 
 Target "CreateSourceZip" (fun _ ->

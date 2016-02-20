@@ -1,17 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$shell_script = <<SCRIPT
-  choco install mongodb -y
-
-  # Ensure we have a local IIS readable directory
-  $share = "\\vboxsvr\vagrant"
-  $guest_path = "c:\code
-  cmd /c  mklink /d $guest_path  $share
-  cmd /c "NET SHARE code=$guest_path /GRANT:Everyone,FULL"
-
-SCRIPT
-
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 VAGRANTFILE_API_VERSION = "2"
 
@@ -22,7 +11,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Every Vagrant virtual environment requires a box to build off of.
   config.vm.box = "machinefactory-api-1.0.1"
-  hostname = "urlsvc.dev"
+  hostname = "urlsvc.local"
   ip_address = "10.0.0.30"
 
   host_port = 5895
@@ -52,9 +41,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     rsync__auto: "true",
     rsync__exclude: [".git/","*.box", "output-*"],
     id: "vagrant"
-
-  # Install Chocolatey and some basic DSC Resources
-  config.vm.provision "shell", inline: $shell_script
 
   # Run DSC
   config.vm.provision "dsc", run: "always" do |dsc|
@@ -91,7 +77,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Commandline arguments to the Configuration run
     #
     # Set of Parameters to pass to the DSC Configuration.
-    dsc.configuration_params = {"-MachineName" => "localhost", "-WebAppPath" => "c:\\vagrant\\urlsvc", "-HostName" => hostname}
+    dsc.configuration_params = {"-MachineName" => "localhost", "-WebAppPath" => "c:\\vagrant\\buildTemp\\_PublishedWebsites\\ShortUrlWebApp", "-HostName" => hostname}
 
     # The type of synced folders to use when sharing the data
     # required for the provisioner to work properly.

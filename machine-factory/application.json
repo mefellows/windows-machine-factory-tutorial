@@ -1,27 +1,28 @@
 {
   "variables": {
-    "base_ami":"ami-fcdcde94",
+    "base_ami":"ami-26af9e4c",
     "user":"vagrant",
     "password":"FooBar@123",
-    "build_version":"1.0.3",
+    "build_version":"1.0.1",
     "app_bundle":"../publish/source.zip",
-    "package_name":"",
+    "package_name":"machine-factory-tutorial",
     "vpc_id":"",
     "subnet_id":""
-  },  
+  },
   "builders": [
     {
-      "type": "amazon-windows-ebs",
+      "type": "amazon-ebs",
       "name": "application-ami",
       "region": "us-east-1",
       "source_ami": "{{user `base_ami`}}",
       "instance_type": "c3.large",
       "ami_name": "machinefactory-api-{{user `build_version`}}",
       "associate_public_ip_address":true,
+      "communicator": "winrm",
       "winrm_username": "{{user `user`}}",
       "winrm_password": "{{user `password`}}",
-      "winrm_wait_timeout": "5m",
-      "winrm_private_ip": false,
+      "winrm_timeout": "5m",
+      "ssh_private_ip": false,
       "winrm_port":5985,
       "vpc_id": "{{user `vpc_id`}}",
       "subnet_id": "{{user `subnet_id`}}",
@@ -58,10 +59,6 @@
       "scripts": [
         "./scripts/Ec2Config.ps1"
       ]
-    },
-    {
-      "type":"powershell",
-      "inline": [ "cmd.exe /c net user /delete vagrant # We don't want this guy hanging around!" ]
-     }
+    }
   ]
 }

@@ -11,7 +11,7 @@
             Get["/{shorturl}"] = param =>
             {
                 string shortUrl = param.shorturl;
-				        return Response.AsRedirect(urlStore.GetUrlFor(shortUrl.ToString()), Nancy.Responses.RedirectResponse.RedirectType.Temporary);
+				        return Response.AsRedirect("http://" + urlStore.GetUrlFor(shortUrl.ToString()), Nancy.Responses.RedirectResponse.RedirectType.Temporary);
             };
         }
 

@@ -11,8 +11,10 @@
     {
       base.ConfigureApplicationContainer(container);
 
-      // var mongoUrlStore = new MongoUrlStore("mongodb://localhost:27017/short_url");
       var mongoUrl = System.Environment.GetEnvironmentVariable("DATABASE_URL");
+      if (mongoUrl == null) {
+        mongoUrl = "mongodb://localhost:27017/short_url";
+      }
       var mongoUrlStore = new MongoUrlStore(mongoUrl);
       container.Register<UrlStore>(mongoUrlStore);
     }

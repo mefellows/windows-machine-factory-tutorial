@@ -1,0 +1,11 @@
+web:
+  build: .
+  ports:
+   - "8080:8080"
+  links:
+  - mongo
+  environment:
+  - DATABASE_URL=mongodb://localhost:27017/short_url
+
+mongo:
+  image: mongo

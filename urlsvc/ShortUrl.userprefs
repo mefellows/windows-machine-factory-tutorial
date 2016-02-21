@@ -1,0 +1,31 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True" selected="True">
+          <Node name="ShortUrlDesktopApp" expanded="True" />
+          <Node name="ShortUrlTest" expanded="True" />
+          <Node name="ShortUrlWebApp" expanded="True" />
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+      <Pad Id="ConnectionManagerPad">
+        <State selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/mfellows/development/public/windows-machine-factory-tutorial/urlsvc/ShortUrl/DataAccess/MongoUrlStore.cs" line="26" />
+      <Breakpoint file="/Users/mfellows/development/public/windows-machine-factory-tutorial/urlsvc/ShortUrl/ShortUrlModule.cs" line="20" />
+      <Breakpoint file="/Users/mfellows/development/public/windows-machine-factory-tutorial/urlsvc/ShortUrl/ShortUrlModule.cs" line="29" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

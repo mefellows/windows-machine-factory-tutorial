@@ -1,5 +1,5 @@
 web:
-  build: .
+  build: urlsvc/ShortUrlDesktopApp
   ports:
    - "8080:8080"
   expose:

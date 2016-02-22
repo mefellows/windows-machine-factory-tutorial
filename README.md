@@ -121,7 +121,7 @@ packer build -only=base-ami -var build_version=1.0.46 ./base.json
 The Application AMI is your Base Image (AMI) + your Application (Package) *without* its runtime configuration applied. This is very important, as it means the image is now able to be used in multiple contexts (stage, test, prod etc.). Provide any dynamic configuration (such as DB connections, collaborator APIs etc.) at stack launch time with [environment variables](http://12factor.net/config), using something like CloudFormation.
 
 ```
-packer build -only=buildagent -var build_version=1.0.46 ./application.json
+packer build -only=application-ami -var build_version=1.0.46 ./application.json
 ```
 
 You will need to install and configure your specific build server application (TeamCity, Jenkins/Hudson, Bamboo etc.) separately, or enhance `provision-agent.ps1`.
@@ -139,8 +139,8 @@ You will need to install and configure your specific build server application (T
 ## Deploying with Terraform
 
 ```
-terraform plan -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_ACCESS_KEY -var ami_id=ami-9f93a2f5
+terraform plan -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_ACCESS_KEY -var ami_id=ami-990f3cf3
 
 # When you're satisfied, run the following (commented out so you don't accidentally run when you cargo cult this ;) )
-# terraform apply -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_ACCESS_KEY -var ami_id=ami-9f93a2f5
+# terraform apply -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_ACCESS_KEY -var ami_id=ami-990f3cf3
 ```

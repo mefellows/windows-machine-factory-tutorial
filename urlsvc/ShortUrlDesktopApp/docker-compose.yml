@@ -9,6 +9,8 @@ web:
   hostname: "docker"
   environment:
   - DATABASE_URL=mongodb://mongo:27017/short_url
+  - PORT=8080
+  - HOSTNAME=docker
 
 mongo:
   image: mongo

@@ -2,10 +2,13 @@ web:
   build: .
   ports:
    - "8080:8080"
+  expose:
+  - 8080
   links:
   - mongo
+  hostname: "docker"
   environment:
-  - DATABASE_URL=mongodb://localhost:27017/short_url
+  - DATABASE_URL=mongodb://mongo:27017/short_url
 
 mongo:
   image: mongo

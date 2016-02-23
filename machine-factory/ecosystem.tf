@@ -70,7 +70,7 @@ resource "aws_security_group" "allow_web" {
       protocol = "-1"
       cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
       from_port = 80
       to_port = 80
@@ -91,4 +91,8 @@ resource "aws_security_group" "allow_web" {
       protocol = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+output "domain-name" {
+    value = "${aws_elb.machine-factory-main.dns_name}"
 }

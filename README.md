@@ -18,8 +18,8 @@ Parity between Development and CI environments is achieved by using a shared [pr
 - [Virtualbox](https://www.virtualbox.org/wiki/Downloads): virtualisation platform to run development machine images.
 - [Parallels Desktop](http://www.parallels.com/au/products/desktop/download/) and the SDK. This is only required if creating Parallels images.
 - [Packer](https://packer.io/): used to build and provision machine images.
-- [Packer Community](https://github.com/packer-community/packer-windows-plugins): specialised plugins to make Windows box generation work
-- A set of AWS Credentials for your account (Consider using [credulous](https://github.com/realestate-com-au/credulous) to manage your keys)
+- ~~[Packer Community](https://github.com/packer-community/packer-windows-plugins): specialised plugins to make Windows box generation work~~
+- A set of AWS Credentials for your account to manage your keys)
 - A subnet and optionally, a VPC, to load the application into
 - Optionally, set environment variables `PACKER_LOG=true` and `PACKER_LOG_PATH=./packer.log` to get better feedback during Packer runs.
 

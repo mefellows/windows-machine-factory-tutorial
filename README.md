@@ -144,3 +144,9 @@ terraform plan -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_AC
 # When you're satisfied, run the following (commented out so you don't accidentally run when you cargo cult this ;) )
 # terraform apply -var access_key=$AWS_ACCESS_KEY_ID -var secret_key=$AWS_SECRET_ACCESS_KEY -var ami_id=ami-990f3cf3
 ```
+
+## Throwing it all away and moving to Mono on Linux and Docker
+
+Whilst all of the above is fun, it works, is exciting and possibly keeps us in a job - it may well be feasible _not_ to do it - by running it on Mono, Linux and Docker.
+
+It's all in the `docker` branch at https://github.com/mefellows/windows-machine-factory-tutorial/tree/docker

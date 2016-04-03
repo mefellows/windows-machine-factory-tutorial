@@ -35,7 +35,6 @@ resource "aws_elb" "machine-factory-main" {
     interval = 60
   }
 
-  cross_zone_load_balancing = true
 }
 
 resource "aws_launch_configuration" "machine-factory-v1" {

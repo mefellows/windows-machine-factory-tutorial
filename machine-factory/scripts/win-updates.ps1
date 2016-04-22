@@ -74,7 +74,7 @@ function Install-WindowsUpdates() {
         Write-Host "No Updates To Download..."
     } else {
         Write-Host 'Downloading Updates...'
-        $Downloader = $UpdateSession.CreateUpdateDownloader()
+        $Downloader = $script:UpdateSession.CreateUpdateDownloader()
         $Downloader.Updates = $UpdatesToDownload
         $Downloader.Download()
     }
